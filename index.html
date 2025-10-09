@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Golf Swing Visualizer — V2.1 (Auto-align)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Lucas Koh — Golf Swing Visualizer <span>V2.1</span></h1>
+  <div class="top-controls">
+    <label class="filebtn">Select P-1 (Setup)
+      <input id="p1file" type="file" accept="image/*">
+    </label>
+    <label class="filebtn">Select P-7 (Impact)
+      <input id="p7file" type="file" accept="image/*">
+    </label>
+    <button id="autoAlign" class="btn">Auto‑Align (Pose)</button>
+    <button id="mergeBtn" class="btn">Merge to Image</button>
+    <button id="saveBtn" class="btn">Download Result</button>
+  </div>
+</header>
+
+<main>
+  <section class="left">
+    <div class="viewer" id="viewer">
+      <canvas id="bgCanvas"></canvas>
+      <div id="p1wrap" class="imgwrap">
+        <img id="p1img" draggable="false">
+      </div>
+      <div id="p7wrap" class="imgwrap overlay">
+        <img id="p7img" draggable="false">
+      </div>
+      <svg id="annotationLayer" class="annotation"></svg>
+    </div>
+
+    <div class="controls">
+      <div class="row">
+        <label>Overlay opacity <input id="opacity" type="range" min="0" max="100" value="50"></label>
+        <label>Blend mode
+          <select id="blend">
+            <option value="normal">Normal</option>
+            <option value="multiply">Multiply</option>
+            <option value="screen">Screen</option>
+            <option value="overlay">Overlay</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Zoom (P-1) <input id="zoomP1" type="range" min="50" max="300" value="100"></label>
+        <label>Zoom (P-7) <input id="zoomP7" type="range" min="50" max="300" value="100"></label>
+      </div>
+      <div class="row">
+        <button id="reset" class="btn">Reset Transforms</button>
+        <button id="flip" class="btn">Flip Horizontally (P-7)</button>
+        <button id="swap" class="btn">Swap Images</button>
+      </div>
+
+      <div class="row">
+        <label><input type="checkbox" id="showGuides" checked> Show guides</label>
+        <label><input type="checkbox" id="showGrid"> Show grid</label>
+      </div>
+
+      <div class="row tools">
+        <strong>Annotate:</strong>
+        <button id="lineTool" class="tool">Line</button>
+        <button id="angleTool" class="tool">Angle</button>
+        <button id="textTool" class="tool">Text</button>
+        <button id="clearAnno" class="tool danger">Clear</button>
+      </div>
+
+      <div class="row small">
+        <label>Student name: <input id="student" placeholder="e.g. Marcos"></label>
+        <button id="saveLocal" class="btn">Save Locally</button>
+        <button id="loadLocal" class="btn">Load Last</button>
+      </div>
+
+      <div class="row note">
+        Tip: drag images to move them; use two-finger pinch on mobile or Zoom sliders.
+      </div>
+    </div>
+  </section>
+
+  <aside class="right">
+    <h3>Tools & Measurements</h3>
+    <div id="measures">
+      <p>Angle: <span id="angleVal">—</span></p>
+      <p>Notes: <span id="notes">No annotations</span></p>
+    </div>
+
+    <div class="compare-slider">
+      <input id="compare" type="range" min="0" max="100" value="50">
+      <label>Swipe to compare</label>
+    </div>
+
+    <div class="downloadPreview">
+      <canvas id="outCanvas"></canvas>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <small>Made for Lucas Koh — V2.1 · Offline client-only web app · Auto-align uses TensorFlow.js pose-detection via CDN.</small>
+</footer>
+
+<!-- TensorFlow & Pose Detection libraries (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.9.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@0.0.7/dist/pose-detection.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js"></script>
+
+<script src="app_pose.js"></script>
+</body>
+</html>
